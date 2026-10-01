@@ -3,7 +3,7 @@ from flask_app import app
 from flask_app.models.libro import Libro
 from flask_app.config.mysqlconnection import connectToMySQL
 
-SCHEMA = 'certificacion_simulado'
+SCHEMA = 'esquema_certificacion'
 
 def requerir_login():
     if 'usuario_id' not in session:
@@ -27,7 +27,6 @@ def nuevo_libro():
     if not requerir_login():
         return redirect('/')
     
-    # Obtenemos géneros existentes para el desplegable
     generos = connectToMySQL(SCHEMA).query_db("SELECT * FROM generos;") or []
     return render_template('agregar_libro.html', generos=generos)
 
