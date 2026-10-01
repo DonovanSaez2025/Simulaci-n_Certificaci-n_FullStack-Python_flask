@@ -1,61 +1,69 @@
-# Importaciones
-import re
-from flask import flash
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask import flash
+import re
 
-# Filtro de caracteres en los email
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+SCHEMA = 'certificacion_simulado'
 
-# Clase Usuario
 class Usuario:
-    # Método constructor
     def __init__(self, data):
-        self.id = data["id"]
-        self.nombre = data["nombre"]
-        self.apellido = data["apellido"]
-        self.email = data["email"]
-        self.password = data["password"]
-        self.created_at = data["created_at"]
-        self.updated_at = data["updated_at"]
-        
-    # Validar datos del usuario
+        self.id_usuario = data.get('id_usuario')
+        self.nombre = data.get('nombre')
+        self.apellido = data.get('apellido')
+        self.email = data.get('email')
+        self.password_hash = data.get('password_hash')
+        self.create_at = data.get('create_at')
+        self.updated_at = data.get('updated_at')
+
+    @classmethod
+    def save(cls, data):
+        query = """
+        INSERT INTO usuarios (nombre, apellido, email, password_hash) 
+        VALUES (%(nombre)s, %(apellido)s, %(email)s, %(password_hash)s);
+        """
+        return connectToMySQL(SCHEMA).query_db(query, data)
+
+    @classmethod
+    def get_by_email(cls, email):
+        query = "SELECT * FROM usuarios WHERE email = %(email)s;"
+        results = connectToMySQL(SCHEMA).query_db(query, {'email': email})
+        if not results:
+            return False
+        return cls(results[0])
+
+    @classmethod
+    def get_by_id(cls, id_usuario):
+        query = "SELECT * FROM usuarios WHERE id_usuario = %(id_usuario)s;"
+        results = connectToMySQL(SCHEMA).query_db(query, {'id_usuario': id_usuario})
+        if not results:
+            return None
+        return cls(results[0])
+
     @staticmethod
-    def validacion(datos):
-        valido = True
+    def validar_registro(usuario):
+        is_valid = True
         
-        # Validar nombre
-        if not datos["nombre"].strip():
-            flash("El nombre es obligatorio.", "nombre")
-            valido = False
-        elif len(datos["nombre"].strip()) < 2:
-            flash("El nombre debe tener al menos 2 caracteres.", "nombre")
-            valido = False
+        if len(usuario.get('nombre', '').strip()) < 2:
+            flash("El nombre debe tener al menos 2 caracteres.", "registro_nombre")
+            is_valid = False
             
-        # Validar apellido
-        if not datos["apellido"].strip():
-            flash("El apellido es obligatorio.", "apellido")
-            valido = False
-        elif len(datos["apellido"].strip()) < 2:
-            flash("El apellido debe tener al menos 2 caracteres.", "apellido")
-            valido = False
-            
-        # Validar email
-        if not datos["email"].strip():
-            flash("El email es obligatorio.", "email")
-            es_valido = False
-        elif not EMAIL_REGEX.match(datos["email"].strip()):
-            flash("El email no tiene un formato válido.", "email")
-            es_valido = False
-            
-        # Validar contraseña
-        if not datos["password_hash"]:
-            flash("La contraseña es obligatoria.", "password_hash")
-            es_valido = False
-        elif len(datos["password_hash"]) < 8:
-            flash("La contraseña debe tener al menos 8 caracteres.", "password_hash")
-            es_valido = False
-            
-        # Validar que ambas contraseñas sean iguales
-        if datos["password_hash"] != datos["conf_password"]:
-            flash("Las contraseñas no coinciden.", "password_hash")
-            es_valido = False
+        if len(usuario.get('apellido', '').strip()) < 2:
+            flash("El apellido debe tener al menos 2 caracteres.", "registro_apellido")
+            is_valid = False
+
+        if not EMAIL_REGEX.match(usuario.get('email', '')):
+            flash("Formato de e-mail inválido.", "registro_email")
+            is_valid = False
+        elif Usuario.get_by_email(usuario.get('email', '')):
+            flash("El e-mail ya se encuentra registrado.", "registro_email")
+            is_valid = False
+
+        if len(usuario.get('password', '')) < 8:
+            flash("La contraseña debe tener al menos 8 caracteres.", "registro_password")
+            is_valid = False
+
+        if usuario.get('password') != usuario.get('confirm_password'):
+            flash("Las contraseñas no coinciden.", "registro_confirm")
+            is_valid = False
+
+        return is_valid

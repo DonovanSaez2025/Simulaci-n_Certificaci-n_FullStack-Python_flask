@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHub - Mis Libros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Barra de Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-4" href="/libros">BookHub</a>
+            <div class="navbar-nav me-auto">
+                <a class="nav-link active" href="/libros">Mis Libros</a>
+                <a class="nav-link" href="/favoritos">Mis Favoritos</a>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="navbar-text text-white fw-semibold">Bienvenido, {{ session['usuario_nombre'] }}</span>
+                <a href="/logout" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Encabezado Tabla 1 -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold m-0">Mis Libros</h2>
+            <a href="/libros/nuevo" class="btn btn-primary fw-semibold">+ Nuevo Libro</a>
+        </div>
+
+        <!-- Tabla 1: Libros del Usuario Autenticado -->
+        <div class="card shadow-sm mb-5">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Género</th>
+                            <th>Fecha</th>
+                            <th>Favoritos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in mis_libros %}
+                        <tr>
+                            <td class="fw-semibold">{{ libro.titulo_libro }}</td>
+                            <td>{{ libro.nombre_autor }}</td>
+                            <td>{{ libro.nombre_genero }}</td>
+                            <td>{{ libro.fecha_publicacion }}</td>
+                            <td>{{ libro.favoritos }}</td>
+                            <td>
+                                <a href="/libros/{{ libro.id_libro_user }}" class="btn btn-link btn-sm text-decoration-none">Ver</a>
+                                <a href="/libros/editar/{{ libro.id_libro_user }}" class="btn btn-link btn-sm text-decoration-none">Editar</a>
+                                <a href="/libros/eliminar/{{ libro.id_libro_user }}" class="btn btn-link btn-sm text-danger text-decoration-none" onclick="return confirm('¿Estás seguro de que deseas eliminar este libro?')">Borrar</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No has publicado ningún libro todavía.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Encabezado Tabla 2 -->
+        <h2 class="fw-bold mb-3">Libros de la Comunidad</h2>
+
+        <!-- Tabla 2: Libros Publicados por Otros Usuarios -->
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Género</th>
+                            <th>Publicado por</th>
+                            <th>Favoritos</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libros_comunidad %}
+                        <tr>
+                            <td class="fw-semibold">{{ libro.titulo_libro }}</td>
+                            <td>{{ libro.nombre_autor }}</td>
+                            <td>{{ libro.nombre_genero }}</td>
+                            <td>{{ libro.publicado_por }}</td>
+                            <td>{{ libro.favoritos }}</td>
+                            <td>
+                                <a href="/libros/{{ libro.id_libro_user }}" class="btn btn-link btn-sm text-decoration-none">Ver</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No hay libros disponibles en la comunidad.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

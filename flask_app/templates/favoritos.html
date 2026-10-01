@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookHub - Mis Favoritos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand fw-bold" href="/libros">BookHub</a>
+        <div class="navbar-nav me-auto">
+            <a class="nav-link" href="/libros">Mis Libros</a>
+            <a class="nav-link active" href="/favoritos">Mis Favoritos</a>
+        </div>
+        <span class="navbar-text me-3 text-white">Bienvenido, {{ session['usuario_nombre'] }}</span>
+        <a href="/logout" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+    </nav>
+
+    <div class="container py-4">
+        <h2 class="mb-4">Mis Libros Favoritos</h2>
+        
+        <div class="card shadow-sm p-3">
+            <table class="table table-striped align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for libro in favoritos %}
+                    <tr>
+                        <td>{{ libro.titulo_libro }}</td>
+                        <td>{{ libro.nombre_autor }}</td>
+                        <td>{{ libro.nombre_genero }}</td>
+                        <td>
+                            <a href="/libros/{{ libro.id_libro_user }}" class="btn btn-link btn-sm">Ver</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            Aún no has agregado ningún libro a tus favoritos.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

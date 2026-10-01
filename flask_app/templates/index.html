@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookHub - Login / Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <!-- Encabezado Principal -->
+        <div class="text-center mb-5">
+            <h1 class="fw-bold display-4">BookHub</h1>
+            <p class="text-muted fs-5">Comparte, descubre y comenta libros</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <!-- Formulario de Registro -->
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm p-4 h-100">
+                    <h3 class="mb-4">Crear Cuenta</h3>
+                    <form action="/registro" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nombre</label>
+                            <input type="text" name="nombre" class="form-control">
+                            {% for message in get_flashed_messages(category_filter=["registro_nombre"]) %}
+                                <div class="text-danger small mt-1">[cite: 1] {{ message }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Apellido</label>
+                            <input type="text" name="apellido" class="form-control">
+                            {% for message in get_flashed_messages(category_filter=["registro_apellido"]) %}
+                                <div class="text-danger small mt-1">[cite: 1] {{ message }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">E-mail</label>
+                            <input type="email" name="email" class="form-control">
+                            {% for message in get_flashed_messages(category_filter=["registro_email"]) %}
+                                <div class="text-danger small mt-1">[cite: 1] {{ message }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Contraseña</label>
+                            <input type="password" name="password" class="form-control">
+                            {% for message in get_flashed_messages(category_filter=["registro_password"]) %}
+                                <div class="text-danger small mt-1">[cite: 1] {{ message }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Confirmar Contraseña</label>
+                            <input type="password" name="confirm_password" class="form-control">
+                            {% for message in get_flashed_messages(category_filter=["registro_confirm"]) %}
+                                <div class="text-danger small mt-1">[cite: 1] {{ message }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 py-2 fw-semibold">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Formulario de Inicio de Sesión -->
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm p-4 h-100">
+                    <h3 class="mb-4">Iniciar Sesión</h3>
+
+                    {% for message in get_flashed_messages(category_filter=["login_error"]) %}
+                        <div class="alert alert-danger p-2 small mb-3">[cite: 1] {{ message }}</div>
+                    {% endfor %}
+
+                    <form action="/login" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">E-mail</label>
+                            <input type="email" name="email" class="form-control">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Contraseña</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 py-2 fw-semibold">Iniciar Sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
