@@ -17,71 +17,71 @@ USE `certificacion_simulado` ;
 -- Table `certificacion_simulado`.`usuarios`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `certificacion_simulado`.`usuarios` (
-  `id_usuario` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(30) NOT NULL,
-  `apellido` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(100) NOT NULL,
-  `password_hash` VARCHAR(255) NOT NULL,
-  `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+    `id_usuario` INT NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(30) NOT NULL,
+    `apellido` VARCHAR(50) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `password_hash` VARCHAR(255) NOT NULL,
+    `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_usuario`),
+    UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `certificacion_simulado`.`generos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `certificacion_simulado`.`generos` (
-  `id_genero` INT NOT NULL AUTO_INCREMENT,
-  `nombre_genero` VARCHAR(50) NOT NULL,
-  `descripcion_genero` TEXT NOT NULL,
-  `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_genero`))
+    `id_genero` INT NOT NULL AUTO_INCREMENT,
+    `nombre_genero` VARCHAR(50) NOT NULL,
+    `descripcion_genero` TEXT NOT NULL,
+    `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_genero`))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `certificacion_simulado`.`autores`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `certificacion_simulado`.`autores` (
-  `id_autor` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(40) NOT NULL,
-  `apellido` VARCHAR(50) NOT NULL,
-  `fecha_nacimiento` DATE NOT NULL,
-  `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_autor`))
+    `id_autor` INT NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(40) NOT NULL,
+    `apellido` VARCHAR(50) NOT NULL,
+    `fecha_nacimiento` DATE NOT NULL,
+    `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_autor`))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `certificacion_simulado`.`libros_de_usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `certificacion_simulado`.`libros_de_usuario` (
-  `id_libro_user` INT NOT NULL AUTO_INCREMENT,
-  `titulo_libro` VARCHAR(100) NOT NULL,
-  `descripcion_libro` TEXT NOT NULL,
-  `fecha_publicacion` DATE NOT NULL,
-  `favoritos` INT NOT NULL,
-  `id_usuario` INT NOT NULL,
-  `id_genero` INT NOT NULL,
-  `id_autor` INT NOT NULL,
-  `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_libro_user`),
-  INDEX `fk_libros_de_usuario_usuarios_idx` (`id_usuario` ASC) VISIBLE,
-  INDEX `fk_libros_de_usuario_generos1_idx` (`id_genero` ASC) VISIBLE,
-  INDEX `fk_libros_de_usuario_autores1_idx` (`id_autor` ASC) VISIBLE,
-  CONSTRAINT `fk_libros_de_usuario_usuarios`
+    `id_libro_user` INT NOT NULL AUTO_INCREMENT,
+    `titulo_libro` VARCHAR(100) NOT NULL,
+    `descripcion_libro` TEXT NOT NULL,
+    `fecha_publicacion` DATE NOT NULL,
+    `favoritos` INT NOT NULL,
+    `id_usuario` INT NOT NULL,
+    `id_genero` INT NOT NULL,
+    `id_autor` INT NOT NULL,
+    `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_libro_user`),
+    INDEX `fk_libros_de_usuario_usuarios_idx` (`id_usuario` ASC) VISIBLE,
+    INDEX `fk_libros_de_usuario_generos1_idx` (`id_genero` ASC) VISIBLE,
+    INDEX `fk_libros_de_usuario_autores1_idx` (`id_autor` ASC) VISIBLE,
+    CONSTRAINT `fk_libros_de_usuario_usuarios`
     FOREIGN KEY (`id_usuario`)
     REFERENCES `certificacion_simulado`.`usuarios` (`id_usuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_libros_de_usuario_generos1`
+    CONSTRAINT `fk_libros_de_usuario_generos1`
     FOREIGN KEY (`id_genero`)
     REFERENCES `certificacion_simulado`.`generos` (`id_genero`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_libros_de_usuario_autores1`
+    CONSTRAINT `fk_libros_de_usuario_autores1`
     FOREIGN KEY (`id_autor`)
     REFERENCES `certificacion_simulado`.`autores` (`id_autor`)
     ON DELETE NO ACTION
@@ -92,30 +92,30 @@ ENGINE = InnoDB;
 -- Table `certificacion_simulado`.`libros_comunidad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `certificacion_simulado`.`libros_comunidad` (
-  `id_libro_comunidad` INT NOT NULL AUTO_INCREMENT,
-  `titulo_libro` VARCHAR(100) NOT NULL,
-  `fecha_publicacion` DATE NOT NULL,
-  `favoritos` INT NOT NULL,
-  `id_autor` INT NOT NULL,
-  `id_genero` INT NOT NULL,
-  `id_usuario` INT NOT NULL,
-  `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_libro_comunidad`),
-  INDEX `fk_libros_comunidad_autores1_idx` (`id_autor` ASC) VISIBLE,
-  INDEX `fk_libros_comunidad_generos1_idx` (`id_genero` ASC) VISIBLE,
-  INDEX `fk_libros_comunidad_usuarios1_idx` (`id_usuario` ASC) VISIBLE,
-  CONSTRAINT `fk_libros_comunidad_autores1`
+    `id_libro_comunidad` INT NOT NULL AUTO_INCREMENT,
+    `titulo_libro` VARCHAR(100) NOT NULL,
+    `fecha_publicacion` DATE NOT NULL,
+    `favoritos` INT NOT NULL,
+    `id_autor` INT NOT NULL,
+    `id_genero` INT NOT NULL,
+    `id_usuario` INT NOT NULL,
+    `create_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id_libro_comunidad`),
+    INDEX `fk_libros_comunidad_autores1_idx` (`id_autor` ASC) VISIBLE,
+    INDEX `fk_libros_comunidad_generos1_idx` (`id_genero` ASC) VISIBLE,
+    INDEX `fk_libros_comunidad_usuarios1_idx` (`id_usuario` ASC) VISIBLE,
+    CONSTRAINT `fk_libros_comunidad_autores1`
     FOREIGN KEY (`id_autor`)
     REFERENCES `certificacion_simulado`.`autores` (`id_autor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_libros_comunidad_generos1`
+    CONSTRAINT `fk_libros_comunidad_generos1`
     FOREIGN KEY (`id_genero`)
     REFERENCES `certificacion_simulado`.`generos` (`id_genero`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_libros_comunidad_usuarios1`
+    CONSTRAINT `fk_libros_comunidad_usuarios1`
     FOREIGN KEY (`id_usuario`)
     REFERENCES `certificacion_simulado`.`usuarios` (`id_usuario`)
     ON DELETE NO ACTION
